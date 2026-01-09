@@ -1,33 +1,17 @@
 import 'dotenv/config';
 import { Client, RichPresence } from 'discord.js-selfbot-v13';
 
-interface ButtonsConfig {
-    myuser: string;
-    discord: string;
-}
-
-interface AppConfig {
-    token: string;
-    applicationId: string;
-    streamUrl: string;
-    presenceName: string;
-    presenceState: string;
-    statusMessages: string[];
-    changeInterval: number;
-    buttons: ButtonsConfig;
-}
-
-const CONFIG: AppConfig = {
-    token: process.env.DISCORD_TOKEN as string,
-    applicationId: process.env.APPLICATION_ID as string,
-    streamUrl: process.env.STREAM_URL as string,
-    presenceName: process.env.PRESENCE_NAME as string,
-    presenceState: process.env.PRESENCE_STATE as string,
+const CONFIG = {
+    token: process.env.DISCORD_TOKEN,
+    applicationId: process.env.APPLICATION_ID,
+    streamUrl: process.env.STREAM_URL,
+    presenceName: process.env.PRESENCE_NAME,
+    presenceState: process.env.PRESENCE_STATE,
     statusMessages: (process.env.STATUS_MESSAGES || '').split(','),
     changeInterval: Number(process.env.CHANGE_INTERVAL) || 5000,
     buttons: {
-        myuser: process.env.BUTTON_MYUSER as string,
-        discord: process.env.BUTTON_DISCORD as string
+        myuser: process.env.BUTTON_MYUSER,
+        discord: process.env.BUTTON_DISCORD
     }
 };
 
@@ -38,7 +22,7 @@ if (!CONFIG.token) {
 const client = new Client();
 let statusIndex = 0;
 
-function updateRichPresence(): void {
+function updateRichPresence() {
     const status = CONFIG.statusMessages[statusIndex];
 
     try {
@@ -53,7 +37,7 @@ function updateRichPresence(): void {
             .addButton('MyUser', CONFIG.buttons.myuser)
             .addButton('Discord', CONFIG.buttons.discord);
 
-        client.user?.setPresence({
+        client.user.setPresence({
             activities: [presence],
             status: 'dnd'
         });
@@ -77,11 +61,11 @@ client.on('ready', () => {
     }, 2000);
 });
 
-client.on('error', (error: Error) => {
+client.on('error', (error) => {
     console.error('Client error:', error);
 });
 
-client.login(CONFIG.token).catch((error: Error) => {
+client.login(CONFIG.token).catch((error) => {
     console.error('Login failed:', error);
 });
 
