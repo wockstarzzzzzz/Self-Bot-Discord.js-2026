@@ -2,11 +2,12 @@
   "name": "selfbot",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.ts"
+    "start": "node index.js"
   },
   "dependencies": {
+    "debug": "^4.4.3",
     "discord.js-selfbot-v13": "^3.7.1",
     "dotenv": "^17.2.3"
   }
