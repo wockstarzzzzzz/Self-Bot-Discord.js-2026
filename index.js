@@ -31,7 +31,14 @@ if (!CONFIG.token) {
   throw new Error('Missing DISCORD_TOKEN in environment variables');
 }
 
-const client = new Client();
+const client = new Client({
+  ws: {
+    properties: {
+      $browser: "Discord iOS"
+    }
+  }
+});
+
 let statusIndex = 0;
 
 function updateRichPresence() {
@@ -75,6 +82,12 @@ client.on('ready', () => {
 client.on('error', console.error);
 
 client.login(CONFIG.token).catch(console.error);
+
+process.on('SIGINT', () => {
+  console.log('Shutting down...');
+  client.destroy();
+  process.exit(0);
+});
 
 process.on('SIGINT', () => {
   console.log('Shutting down...');
